@@ -30,18 +30,28 @@ CUBE_HEIGHT = TILE_HEIGHT - 10
 CUBE_HEIGHT_3D = 20
 
 CUBE_LIST = [
-    {"ID" : 1, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INITIAL_COORD" : (0,0), "CURRENT_COORD" : [0,0]} ,
-    {"ID" : 2, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INITIAL_COORD" : (0,0), "CURRENT_COORD" : [0,0]},
-    {"ID" : 3, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INITIAL_COORD" : (0,0), "CURRENT_COORD" : [0,0]},
-    {"ID" : 4, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INITIAL_COORD" : (0,0), "CURRENT_COORD" : [0,0]},
-    {"ID" : 5, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INITIAL_COORD" : (0,0), "CURRENT_COORD" : [0,0]},
-    {"ID" : 6, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INITIAL_COORD" : (0,0), "CURRENT_COORD" : [0,0]}
+    {"ID" : 1, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "A2", "COORDINATES" : (0,0)},
+    {"ID" : 2, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "A4", "COORDINATES" : (0,0)},
+    {"ID" : 3, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "A6", "COORDINATES" : (0,0)},
+    {"ID" : 4, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "A8", "COORDINATES" : (0,0)},
+    {"ID" : 5, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "A10", "COORDINATES" : (0,0)},
+    {"ID" : 6, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "B1", "COORDINATES" : (0,0)},
+    {"ID" : 7, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "B3", "COORDINATES" : (0,0)},
+    {"ID" : 8, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "B5", "COORDINATES" : (0,0)},
+    {"ID" : 9, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "B7", "COORDINATES" : (0,0)},
+    {"ID" : 10, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "B9", "COORDINATES" : (0,0)},
+    {"ID" : 11, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "I2", "COORDINATES" : (0,0)},
+    {"ID" : 12, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "I4", "COORDINATES" : (0,0)},
+    {"ID" : 13, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "I6", "COORDINATES" : (0,0)},
+    {"ID" : 14, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "I8", "COORDINATES" : (0,0)},
+    {"ID" : 15, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "I10", "COORDINATES" : (0,0)},
+    {"ID" : 16, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "J1", "COORDINATES" : (0,0)},
+    {"ID" : 17, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "J3", "COORDINATES" : (0,0)},
+    {"ID" : 18, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "J5", "COORDINATES" : (0,0)},
+    {"ID" : 19, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "J7", "COORDINATES" : (0,0)},
+    {"ID" : 20, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "J9", "COORDINATES" : (0,0)}    
 ]
 
-CUBE_COLOR_LOGIC = [
-    {"TEAMCOLOR" : "RED", "COLOR" : (CUBE_COLOR_TOP_R, CUBE_COLOR_LEFT_R, CUBE_COLOR_RIGHT_R)},
-    {"TEAMCOLOR" : "GREEN", "COLOR" : (CUBE_COLOR_TOP_G, CUBE_COLOR_LEFT_G, CUBE_COLOR_RIGHT_G)}
-]
 # Load button image
 BUTTON_IMAGE = pygame.image.load('C:/Users/091318/Downloads/gear.png')  # Replace with your button image path
 BUTTON_RECT = BUTTON_IMAGE.get_rect()
@@ -91,6 +101,84 @@ class Board_setup:
                
         return TILESET, grid_surface
 
+class Draw_cubes:
+    def draw_cubes(self, surface, CUBE_LIST):
+        total_cubes = len(CUBE_LIST)
+        offset_y = -15 # to make the cube sit nicely in the square.
+        for cubes in CUBE_LIST[:total_cubes]:  # 1 just for ease of testing initial, change to total_cubes when ready
+            cube_ID = cubes["ID"]
+            cube_color = cubes["TEAMCOLOR"]
+            cube_x, cube_y = cubes["COORDINATES"]
+            cube_alive = cubes["ALIVE"]
+            cube_kinged = cubes["KINGED"]
+            self.visualize_cubes(surface, cube_x, cube_y, offset_y, cube_alive, cube_color)
+    
+    def visualize_cubes(self, surface, cube_x, cube_y, offset_y, cube_alive, cube_color):
+        if cube_alive:            
+            if cube_color == "RED":
+                color_top = CUBE_COLOR_TOP_R
+                color_left = CUBE_COLOR_LEFT_R
+                color_right = CUBE_COLOR_RIGHT_R
+            else:
+                color_top = CUBE_COLOR_TOP_G
+                color_left = CUBE_COLOR_LEFT_G
+                color_right = CUBE_COLOR_RIGHT_G                
+
+            top_points = [
+                (cube_x, cube_y + offset_y),
+                (cube_x + CUBE_WIDTH // 2, cube_y + CUBE_HEIGHT // 2 + offset_y),
+                (cube_x, cube_y + CUBE_HEIGHT + offset_y),
+                (cube_x - CUBE_WIDTH // 2, cube_y + CUBE_HEIGHT // 2 + offset_y)
+            ]
+            pygame.draw.polygon(surface, color_top, top_points)
+        
+            left_points = [
+                (cube_x - CUBE_WIDTH // 2, cube_y + CUBE_HEIGHT // 2 + offset_y),
+                (cube_x, cube_y + CUBE_HEIGHT + offset_y),
+                (cube_x, cube_y + CUBE_HEIGHT + offset_y + CUBE_HEIGHT_3D),
+                (cube_x - CUBE_WIDTH // 2, cube_y + CUBE_HEIGHT // 2 + offset_y + CUBE_HEIGHT_3D)
+            ]
+            pygame.draw.polygon(surface, color_left, left_points)
+                    
+            right_points = [
+                (cube_x + CUBE_WIDTH // 2, cube_y + CUBE_HEIGHT // 2 + offset_y),
+                (cube_x, cube_y + CUBE_HEIGHT + offset_y),
+                (cube_x, cube_y + CUBE_HEIGHT + offset_y + CUBE_HEIGHT_3D),
+                (cube_x + CUBE_WIDTH // 2, cube_y + CUBE_HEIGHT // 2 + offset_y + CUBE_HEIGHT_3D)
+            ]
+            pygame.draw.polygon(surface, color_right, right_points)
+
+class Controls:
+    def mouse_logic(self):
+        for cube in CUBE_LIST:
+            cube_x, cube_y = cube["COORDINATES"]
+            if point_in_polygon(mouse_pos, [
+                (cube_x - CUBE_WIDTH // 2, cube_y),
+                (cube_x + CUBE_WIDTH // 2, cube_y),
+                (cube_x, cube_y + CUBE_HEIGHT),
+                (cube_x - CUBE_WIDTH // 2, cube_y + CUBE_HEIGHT // 2),
+            ]):
+                dragging_cube = cube
+                offset_x = mouse_pos[0] - cube_x
+                offset_y = mouse_pos[1] - cube_y
+        return dragging_cube, offset_x, offset_y        
+    
+    def snap_to_tile_logic(self):
+        for tile in TILESET:
+            if tile['TILE_VALIDITY'] and point_in_polygon(mouse_pos, [
+                (tile['POSITION'][0], tile['POSITION'][1]),
+                (tile['POSITION'][0] + TILE_WIDTH // 2, tile['POSITION'][1] + TILE_HEIGHT // 2),
+                (tile['POSITION'][0], tile['POSITION'][1] + TILE_HEIGHT),
+                (tile['POSITION'][0] - TILE_WIDTH // 2, tile['POSITION'][1] + TILE_HEIGHT // 2),
+            ]):
+                dragging_cube['COORDINATES'] = tile['POSITION']
+                break
+            else:
+                
+        dragging_cube = None    
+        return dragging_cube  # Release the cube
+
+
 
 class DebugSetting:
     def __init__(self):
@@ -129,6 +217,14 @@ class DebugSetting:
 DEBUG_SETTING = DebugSetting()
 SETUP_BOARD = Board_setup()
 TILESET, grid_surface = SETUP_BOARD.setup_iso_grid(GRID_SIZE)
+SETUP_CUBES = Draw_cubes()
+CONTROLS = Controls()
+
+for CUBE_ID in CUBE_LIST:
+    for TILE_ID in TILESET:
+        if CUBE_ID["INIT_TILE_ID"] == TILE_ID["TILEID"]:
+            CUBE_ID["COORDINATES"] = TILE_ID["POSITION"]
+
 
 def point_in_polygon(point, polygon):
     """Check if a point is inside a polygon."""
@@ -166,6 +262,10 @@ def get_hovered_tile(tileset, mouse_pos):
 running = True
 hovered_tile = None
 
+dragging_cube = None
+offset_x = 0
+offset_y = 0
+
 while running:
     mouse_pos = pygame.mouse.get_pos()
     hovered_tile = get_hovered_tile(TILESET, mouse_pos)
@@ -173,11 +273,24 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if BUTTON_RECT.collidepoint(event.pos):
                 DEBUG_MODE = not DEBUG_MODE
                 print(f"DEBUG_MODE is now {'ON' if DEBUG_MODE else 'OFF'}")
                 TILESET, grid_surface = SETUP_BOARD.setup_iso_grid(GRID_SIZE)  # Re-create the grid surface
+            else:
+                CONTROLS.mouse_logic()
+
+        elif event.type == pygame.MOUSEBUTTONUP:
+            if dragging_cube:
+                CONTROLS.snap_to_tile_logic()
+                
+
+        elif event.type == pygame.MOUSEMOTION:
+            if dragging_cube:
+                # Update the position of the dragged cube
+                dragging_cube['COORDINATES'] = (mouse_pos[0] - offset_x, mouse_pos[1] - offset_y)
 
     screen.fill(BACKGROUND_COLOR)
     screen.blit(grid_surface, (0, 0))
@@ -190,12 +303,15 @@ while running:
         border_color = HOVER_COLOR if tile == hovered_tile else None
         SETUP_BOARD.draw_iso_tile(screen, tile_color, x, y, border_color)
 
+    # Draw the cubes
+    SETUP_CUBES.draw_cubes(screen, CUBE_LIST)
+
     # Display the debug panel for the hovered tile
     if DEBUG_MODE:
         DEBUG_SETTING.draw_debug_panel(screen, hovered_tile)
         DEBUG_SETTING.draw_tileID(screen, TILESET)
-    pygame.display.flip()
 
+    pygame.display.flip()
 
 pygame.quit()
 sys.exit()
