@@ -30,26 +30,26 @@ CUBE_HEIGHT = TILE_HEIGHT - 10
 CUBE_HEIGHT_3D = 20
 
 CUBE_LIST = [
-    {"ID" : 1, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "A2", "COORDINATES" : (0,0)},
-    {"ID" : 2, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "A4", "COORDINATES" : (0,0)},
-    {"ID" : 3, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "A6", "COORDINATES" : (0,0)},
-    {"ID" : 4, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "A8", "COORDINATES" : (0,0)},
-    {"ID" : 5, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "A10", "COORDINATES" : (0,0)},
-    {"ID" : 6, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "B1", "COORDINATES" : (0,0)},
-    {"ID" : 7, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "B3", "COORDINATES" : (0,0)},
-    {"ID" : 8, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "B5", "COORDINATES" : (0,0)},
-    {"ID" : 9, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "B7", "COORDINATES" : (0,0)},
-    {"ID" : 10, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "B9", "COORDINATES" : (0,0)},
-    {"ID" : 11, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "I2", "COORDINATES" : (0,0)},
-    {"ID" : 12, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "I4", "COORDINATES" : (0,0)},
-    {"ID" : 13, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "I6", "COORDINATES" : (0,0)},
-    {"ID" : 14, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "I8", "COORDINATES" : (0,0)},
-    {"ID" : 15, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "I10", "COORDINATES" : (0,0)},
-    {"ID" : 16, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "J1", "COORDINATES" : (0,0)},
-    {"ID" : 17, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "J3", "COORDINATES" : (0,0)},
-    {"ID" : 18, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "J5", "COORDINATES" : (0,0)},
-    {"ID" : 19, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "J7", "COORDINATES" : (0,0)},
-    {"ID" : 20, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "J9", "COORDINATES" : (0,0)}    
+    {"ID" : 1, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "A2", "COORDINATES" : [0,0]},
+    {"ID" : 2, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "A4", "COORDINATES" : [0,0]},
+    {"ID" : 3, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "A6", "COORDINATES" : [0,0]},
+    {"ID" : 4, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "A8", "COORDINATES" : [0,0]},
+    {"ID" : 5, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "A10", "COORDINATES" : [0,0]},
+    {"ID" : 6, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "B1", "COORDINATES" : [0,0]},
+    {"ID" : 7, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "B3", "COORDINATES" : [0,0]},
+    {"ID" : 8, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "B5", "COORDINATES" : [0,0]},
+    {"ID" : 9, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "B7", "COORDINATES" : [0,0]},
+    {"ID" : 10, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "B9", "COORDINATES" : [0,0]},
+    {"ID" : 11, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "I2", "COORDINATES" : [0,0]},
+    {"ID" : 12, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "I4", "COORDINATES" : [0,0]},
+    {"ID" : 13, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "I6", "COORDINATES" : [0,0]},
+    {"ID" : 14, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "I8", "COORDINATES" : [0,0]},
+    {"ID" : 15, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "I10", "COORDINATES" : [0,0]},
+    {"ID" : 16, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "J1", "COORDINATES" : [0,0]},
+    {"ID" : 17, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "J3", "COORDINATES" : [0,0]},
+    {"ID" : 18, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "J5", "COORDINATES" : [0,0]},
+    {"ID" : 19, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "J7", "COORDINATES" : [0,0]},
+    {"ID" : 20, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "J9", "COORDINATES" : [0,0]}    
 ]
 
 # Load button image
@@ -61,14 +61,19 @@ screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption("Isometric Checkers")
 
 class Board_setup:
-    def draw_iso_tile(self, surface, color, x, y, border_color=None):
+    def draw_iso_tile(self, surface, color, x, y, Tile_entry, border_color=None):
         """Draws an isometric tile with optional border color."""
+        topvx = (x,y)
+        rightvx = (x + TILE_WIDTH // 2, y + TILE_HEIGHT // 2)
+        bottomvx = (x, y + TILE_HEIGHT) 
+        leftvx = (x - TILE_WIDTH // 2, y + TILE_HEIGHT // 2)    
         vertexes = [
-            (x, y),
-            (x + TILE_WIDTH // 2, y + TILE_HEIGHT // 2),
-            (x, y + TILE_HEIGHT),
-            (x - TILE_WIDTH // 2, y + TILE_HEIGHT // 2)
+            (topvx),
+            (rightvx),
+            (bottomvx),
+            (leftvx)
         ]
+        Tile_entry["VERTEXES"] = vertexes
         pygame.draw.polygon(surface, color, vertexes)
         if border_color:
             pygame.draw.polygon(surface, border_color, vertexes, 3)  # Draw border with width of 3
@@ -77,7 +82,7 @@ class Board_setup:
         return chr(ord('A') + index)
     
     def setup_iso_grid(self, GRID_SIZE):
-        TILESET = []
+        TILE_SET = []
         grid_surface = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT))
         grid_surface.fill(BACKGROUND_COLOR)
         for row in range(GRID_SIZE):
@@ -93,19 +98,19 @@ class Board_setup:
                     TILE_VALIDITY = True
 
                 row_letter = self.index_to_letter(row)
-                ADD_TILESET = {"TILEID" : row_letter + str(col+1), "POSITION" : (x, y), "COLOR" : TILE_COLOR, "TILE_VALIDITY" : TILE_VALIDITY, "TILE_IN_USE" : None}
-                TILESET.append(ADD_TILESET)
+                Tile_entry = {"TILEID" : row_letter + str(col+1), "POSITION" : (x, y), "VERTEXES" : (), "COLOR" : TILE_COLOR, "TILE_VALIDITY" : TILE_VALIDITY, "TILE_IN_USE" : None}
+                TILE_SET.append(Tile_entry)
 
                 # Draw tile without borders for the initial board
-                self.draw_iso_tile(grid_surface, TILE_COLOR, x, y)
+                self.draw_iso_tile(grid_surface, TILE_COLOR, x, y, Tile_entry)
                
-        return TILESET, grid_surface
+        return TILE_SET, grid_surface
 
 class Draw_cubes:
     def draw_cubes(self, surface, CUBE_LIST):
         total_cubes = len(CUBE_LIST)
         offset_y = -15 # to make the cube sit nicely in the square.
-        for cubes in CUBE_LIST[:total_cubes]:  # 1 just for ease of testing initial, change to total_cubes when ready
+        for cubes in CUBE_LIST[:total_cubes]:  
             cube_ID = cubes["ID"]
             cube_color = cubes["TEAMCOLOR"]
             cube_x, cube_y = cubes["COORDINATES"]
@@ -148,41 +153,102 @@ class Draw_cubes:
             ]
             pygame.draw.polygon(surface, color_right, right_points)
 
-class Controls:
-    def mouse_logic(self):
+class Game_logic:
+    def check_valid_move():
+        pass
+
+
+class Hitbox_detection:
+    def cube_hitbox(self, mouse_pos):
         for cube in CUBE_LIST:
             cube_x, cube_y = cube["COORDINATES"]
-            if point_in_polygon(mouse_pos, [
+            hitbox = [
                 (cube_x - CUBE_WIDTH // 2, cube_y),
                 (cube_x + CUBE_WIDTH // 2, cube_y),
-                (cube_x, cube_y + CUBE_HEIGHT),
-                (cube_x - CUBE_WIDTH // 2, cube_y + CUBE_HEIGHT // 2),
-            ]):
-                dragging_cube = cube
-                offset_x = mouse_pos[0] - cube_x
-                offset_y = mouse_pos[1] - cube_y
-        return dragging_cube, offset_x, offset_y        
-    
-    def snap_to_tile_logic(self):
-        for tile in TILESET:
-            if tile['TILE_VALIDITY'] and point_in_polygon(mouse_pos, [
-                (tile['POSITION'][0], tile['POSITION'][1]),
-                (tile['POSITION'][0] + TILE_WIDTH // 2, tile['POSITION'][1] + TILE_HEIGHT // 2),
-                (tile['POSITION'][0], tile['POSITION'][1] + TILE_HEIGHT),
-                (tile['POSITION'][0] - TILE_WIDTH // 2, tile['POSITION'][1] + TILE_HEIGHT // 2),
-            ]):
-                dragging_cube['COORDINATES'] = tile['POSITION']
-                break
-            else:
-                
-        dragging_cube = None    
-        return dragging_cube  # Release the cube
+                (cube_x + CUBE_WIDTH // 2, cube_y + CUBE_HEIGHT),
+                (cube_x - CUBE_WIDTH // 2, cube_y + CUBE_HEIGHT // 2)     
+            ]
+            if self.hitbox_detection(mouse_pos, hitbox):
+                selected_cube = cube["ID"]
+                cube_hit = True
+                return cube_hit, selected_cube
+        return None, None
 
+    def tile_hitbox(self, mouse_pos, dragging_cube, selected_cube): #USED FOR MOUSE/HOVER AND CUBE PLACEMENT DETECTION!
+        for tile in TILE_SET:
+            hitbox = tile["VERTEXES"]
+            if self.hitbox_detection(mouse_pos, hitbox):
+                hovered_tile = tile
+                self.tile_hover(hovered_tile)
+                if dragging_cube == True and isinstance(selected_cube, int):
+                    return hovered_tile
+        return None
 
+    def tile_hover(self, hovered_tile):
+        for tile in TILE_SET:
+            x, y = tile["POSITION"]
+            color = tile["COLOR"]
+            border_color = HOVER_COLOR if tile == hovered_tile else None
+            SETUP_BOARD.draw_iso_tile(grid_surface, color, x, y, tile, border_color)
+
+    def hitbox_detection(self, mouse_pos, hitbox):
+        mouse_x, mouse_y = mouse_pos          
+        detection = False
+        n = len(hitbox)
+        p1x, p1y = hitbox[0]
+        for i in range(n + 1):
+            p2x, p2y = hitbox[i % n]
+            if mouse_y > min(p1y, p2y):
+                if mouse_y <= max(p1y, p2y):
+                    if mouse_x <= max(p1x, p2x):
+                        if p1y != p2y:
+                            xints = (mouse_y - p1y) * (p2x - p1x) / (p2y - p1y) + p1x
+                        if p1x == p2x or mouse_x <= xints:
+                            detection = not detection
+            p1x, p1y = p2x, p2y
+        return detection        
+
+    def snap_to_tile_logic(self, mouse_pos, dragging_cube, selected_cube):
+        if selected_cube is None:
+            return
+        
+        picked_tile = self.tile_hitbox(mouse_pos, dragging_cube, selected_cube)
+        
+        if picked_tile is None:
+            return
+        
+        picked_tile_coords = picked_tile["POSITION"]
+        picked_tile_validity = picked_tile["TILE_VALIDITY"]
+        selected_cube_old_coords = CUBE_LIST[selected_cube - 1]["COORDINATES"]
+        if picked_tile_validity:
+            CUBE_LIST[selected_cube - 1]["COORDINATES"] = [picked_tile_coords[0], picked_tile_coords[1]]
+        else:
+            CUBE_LIST[selected_cube - 1]["COORDINATES"] = [selected_cube_old_coords[0], selected_cube_old_coords[1]]
 
 class DebugSetting:
     def __init__(self):
         self.debug_font = pygame.font.Font(None, 24)  # Initialize font once
+        self.antialias = True  
+        self.text_color = COLOR_WHITE
+
+    def debug_panel_mouse_pos(self, surface, mouse_pos):
+        panel_width = 200
+        panel_height = 100
+        panel2_surface = pygame.Surface((panel_width, panel_height))
+        panel2_surface.fill(COLOR_BLACK)
+
+        # Prepare multiline text
+        mouse_info = f"Mouse Position :\nX = {mouse_pos[0]}\nY = {mouse_pos[1]}"
+        lines = mouse_info.splitlines()  # Split text into lines
+
+        # Render each line and blit it
+        y_offset = 5  # Initial offset for the first line
+        for line in lines:
+            text_surface = self.debug_font.render(line, self.antialias, self.text_color)
+            panel2_surface.blit(text_surface, (5, y_offset))
+            y_offset += text_surface.get_height() + 5  # Move down for the next line (5 pixels of spacing)
+
+        surface.blit(panel2_surface, (WINDOW_WIDTH - panel_width - 150, 10))  # Blit the panel onto the main surface
 
     def draw_debug_panel(self, surface, tile_info):
         """Draws the debug panel showing only the hovered tile's information."""
@@ -193,8 +259,8 @@ class DebugSetting:
         
         if tile_info:
             # Format and render the hovered tile's dictionary in the panel
-            headers = ["TILEID", "POSITION", "COLOR", "VALID", "IN_USE"]
-            values = [str(tile_info[key]) for key in ["TILEID", "POSITION", "COLOR", "TILE_VALIDITY", "TILE_IN_USE"]]
+            headers = ["TILEID", "POSITION", "VERTEXES", "COLOR", "VALID", "IN_USE"]
+            values = [str(tile_info[key]) for key in ["TILEID", "POSITION", "VERTEXES", "COLOR", "TILE_VALIDITY", "TILE_IN_USE"]]
 
             for i, header in enumerate(headers):
                 text_surface = self.debug_font.render(f"{header}: {values[i]}", True, COLOR_WHITE)
@@ -203,9 +269,9 @@ class DebugSetting:
         # Blit the panel onto the main surface
         surface.blit(panel_surface, (10, 10))  # Top-left corner position
 
-    def draw_tileID(self, surface, TILESET):
+    def draw_tileID(self, surface, TILE_SET):
         font = pygame.font.Font(None, 32)
-        for tiles in TILESET:
+        for tiles in TILE_SET:
             tile_color = tiles["COLOR"]
             tile_ID = tiles["TILEID"]
             tilex, tiley = tiles["POSITION"]
@@ -216,59 +282,27 @@ class DebugSetting:
 
 DEBUG_SETTING = DebugSetting()
 SETUP_BOARD = Board_setup()
-TILESET, grid_surface = SETUP_BOARD.setup_iso_grid(GRID_SIZE)
+TILE_SET, grid_surface = SETUP_BOARD.setup_iso_grid(GRID_SIZE)
 SETUP_CUBES = Draw_cubes()
-CONTROLS = Controls()
+HITBOX_DETECTION = Hitbox_detection()
+GAME_LOGIC = Game_logic()
 
 for CUBE_ID in CUBE_LIST:
-    for TILE_ID in TILESET:
+    for TILE_ID in TILE_SET:
         if CUBE_ID["INIT_TILE_ID"] == TILE_ID["TILEID"]:
             CUBE_ID["COORDINATES"] = TILE_ID["POSITION"]
 
 
-def point_in_polygon(point, polygon):
-    """Check if a point is inside a polygon."""
-    x, y = point
-    inside = False
-    n = len(polygon)
-    p1x, p1y = polygon[0]
-    for i in range(n + 1):
-        p2x, p2y = polygon[i % n]
-        if y > min(p1y, p2y):
-            if y <= max(p1y, p2y):
-                if x <= max(p1x, p2x):
-                    if p1y != p2y:
-                        xints = (y - p1y) * (p2x - p1x) / (p2y - p1y) + p1x
-                    if p1x == p2x or x <= xints:
-                        inside = not inside
-        p1x, p1y = p2x, p2y
-    return inside
 
-def get_hovered_tile(tileset, mouse_pos):
-    """Returns the tile dictionary if the mouse is hovering over a tile."""
-    for tile in tileset:
-        x, y = tile['POSITION']
-        # Define the polygon points of the tile
-        polygon = [
-            (x, y),
-            (x + TILE_WIDTH // 2, y + TILE_HEIGHT // 2),
-            (x, y + TILE_HEIGHT),
-            (x - TILE_WIDTH // 2, y + TILE_HEIGHT // 2)
-        ]
-        if point_in_polygon(mouse_pos, polygon):
-            return tile
-    return None
 
 running = True
-hovered_tile = None
-
 dragging_cube = None
-offset_x = 0
-offset_y = 0
+selected_cube = None
+Tile_hover = None
 
 while running:
     mouse_pos = pygame.mouse.get_pos()
-    hovered_tile = get_hovered_tile(TILESET, mouse_pos)
+    HITBOX_DETECTION.tile_hitbox(mouse_pos, dragging_cube, selected_cube)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -278,38 +312,33 @@ while running:
             if BUTTON_RECT.collidepoint(event.pos):
                 DEBUG_MODE = not DEBUG_MODE
                 print(f"DEBUG_MODE is now {'ON' if DEBUG_MODE else 'OFF'}")
-                TILESET, grid_surface = SETUP_BOARD.setup_iso_grid(GRID_SIZE)  # Re-create the grid surface
+                TILE_SET, grid_surface = SETUP_BOARD.setup_iso_grid(GRID_SIZE)  # Re-create the grid surface
             else:
-                CONTROLS.mouse_logic()
-
+                dragging_cube, selected_cube = HITBOX_DETECTION.cube_hitbox(mouse_pos)
+                print(dragging_cube)
         elif event.type == pygame.MOUSEBUTTONUP:
-            if dragging_cube:
-                CONTROLS.snap_to_tile_logic()
+            HITBOX_DETECTION.snap_to_tile_logic(mouse_pos, dragging_cube, selected_cube)
+            dragging_cube = None
+            selected_cube = None
                 
-
         elif event.type == pygame.MOUSEMOTION:
             if dragging_cube:
-                # Update the position of the dragged cube
-                dragging_cube['COORDINATES'] = (mouse_pos[0] - offset_x, mouse_pos[1] - offset_y)
+                CUBE_LIST[selected_cube - 1]['COORDINATES'] = [mouse_pos[0], mouse_pos[1]]
 
     screen.fill(BACKGROUND_COLOR)
     screen.blit(grid_surface, (0, 0))
     screen.blit(BUTTON_IMAGE, BUTTON_RECT.topleft)
 
-    # Redraw tiles with hover effect
-    for tile in TILESET:
-        x, y = tile['POSITION']
-        tile_color = tile['COLOR']
-        border_color = HOVER_COLOR if tile == hovered_tile else None
-        SETUP_BOARD.draw_iso_tile(screen, tile_color, x, y, border_color)
-
     # Draw the cubes
     SETUP_CUBES.draw_cubes(screen, CUBE_LIST)
 
+    if dragging_cube:
+        print(dragging_cube)
+
     # Display the debug panel for the hovered tile
     if DEBUG_MODE:
-        DEBUG_SETTING.draw_debug_panel(screen, hovered_tile)
-        DEBUG_SETTING.draw_tileID(screen, TILESET)
+        DEBUG_SETTING.draw_tileID(screen, TILE_SET)
+        DEBUG_SETTING.debug_panel_mouse_pos(screen, mouse_pos)
 
     pygame.display.flip()
 
