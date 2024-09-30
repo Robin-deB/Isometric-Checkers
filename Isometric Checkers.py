@@ -30,39 +30,37 @@ CUBE_HEIGHT = TILE_HEIGHT - 10
 CUBE_HEIGHT_3D = 20
 
 CUBE_LIST = [
-    {"ID" : 1, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "A2", "COORDINATES" : [0,0]},
-    {"ID" : 2, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "A4", "COORDINATES" : [0,0]},
-    {"ID" : 3, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "A6", "COORDINATES" : [0,0]},
-    {"ID" : 4, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "A8", "COORDINATES" : [0,0]},
-    {"ID" : 5, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "A10", "COORDINATES" : [0,0]},
-    {"ID" : 6, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "B1", "COORDINATES" : [0,0]},
-    {"ID" : 7, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "B3", "COORDINATES" : [0,0]},
-    {"ID" : 8, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "B5", "COORDINATES" : [0,0]},
-    {"ID" : 9, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "B7", "COORDINATES" : [0,0]},
-    {"ID" : 10, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "B9", "COORDINATES" : [0,0]},
-    {"ID" : 11, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "I2", "COORDINATES" : [0,0]},
-    {"ID" : 12, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "I4", "COORDINATES" : [0,0]},
-    {"ID" : 13, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "I6", "COORDINATES" : [0,0]},
-    {"ID" : 14, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "I8", "COORDINATES" : [0,0]},
-    {"ID" : 15, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "I10", "COORDINATES" : [0,0]},
-    {"ID" : 16, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "J1", "COORDINATES" : [0,0]},
-    {"ID" : 17, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "J3", "COORDINATES" : [0,0]},
-    {"ID" : 18, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "J5", "COORDINATES" : [0,0]},
-    {"ID" : 19, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "J7", "COORDINATES" : [0,0]},
-    {"ID" : 20, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "J9", "COORDINATES" : [0,0]}    
+    {"ID" : 1, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "A2", "NEW COORDINATES" : [0,0], "OLD COORDINATES" : [0,0]},
+    {"ID" : 2, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "A4", "NEW COORDINATES" : [0,0], "OLD COORDINATES" : [0,0]},
+    {"ID" : 3, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "A6", "NEW COORDINATES" : [0,0], "OLD COORDINATES" : [0,0]},
+    {"ID" : 4, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "A8", "NEW COORDINATES" : [0,0], "OLD COORDINATES" : [0,0]},
+    {"ID" : 5, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "A10", "NEW COORDINATES" : [0,0], "OLD COORDINATES" : [0,0]},
+    {"ID" : 6, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "B1", "NEW COORDINATES" : [0,0], "OLD COORDINATES" : [0,0]},
+    {"ID" : 7, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "B3", "NEW COORDINATES" : [0,0], "OLD COORDINATES" : [0,0]},
+    {"ID" : 8, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "B5", "NEW COORDINATES" : [0,0], "OLD COORDINATES" : [0,0]},
+    {"ID" : 9, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "B7", "NEW COORDINATES" : [0,0], "OLD COORDINATES" : [0,0]},
+    {"ID" : 10, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "B9", "NEW COORDINATES" : [0,0], "OLD COORDINATES" : [0,0]},
+    {"ID" : 11, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "I2", "NEW COORDINATES" : [0,0], "OLD COORDINATES" : [0,0]},
+    {"ID" : 12, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "I4", "NEW COORDINATES" : [0,0], "OLD COORDINATES" : [0,0]},
+    {"ID" : 13, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "I6", "NEW COORDINATES" : [0,0], "OLD COORDINATES" : [0,0]},
+    {"ID" : 14, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "I8", "NEW COORDINATES" : [0,0], "OLD COORDINATES" : [0,0]},
+    {"ID" : 15, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "I10", "NEW COORDINATES" : [0,0], "OLD COORDINATES" : [0,0]},
+    {"ID" : 16, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "J1", "NEW COORDINATES" : [0,0], "OLD COORDINATES" : [0,0]},
+    {"ID" : 17, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "J3", "NEW COORDINATES" : [0,0], "OLD COORDINATES" : [0,0]},
+    {"ID" : 18, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "J5", "NEW COORDINATES" : [0,0], "OLD COORDINATES" : [0,0]},
+    {"ID" : 19, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "J7", "NEW COORDINATES" : [0,0], "OLD COORDINATES" : [0,0]},
+    {"ID" : 20, "TEAMCOLOR" : "GREEN", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "J9", "NEW COORDINATES" : [0,0], "OLD COORDINATES" : [0,0]}    
 ]
 
-# Load button image
-BUTTON_IMAGE = pygame.image.load('C:/Users/091318/Downloads/gear.png')  # Replace with your button image path
+BUTTON_IMAGE = pygame.image.load('C:/Users/091318/Downloads/gear.png')  
 BUTTON_RECT = BUTTON_IMAGE.get_rect()
-BUTTON_RECT.topleft = (WINDOW_WIDTH - BUTTON_RECT.width - 10, 10)  # Position the button in the top-right corner
+BUTTON_RECT.topleft = (WINDOW_WIDTH - BUTTON_RECT.width - 10, 10)  
 
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption("Isometric Checkers")
 
 class Board_setup:
     def draw_iso_tile(self, surface, color, x, y, Tile_entry, border_color=None):
-        """Draws an isometric tile with optional border color."""
         topvx = (x,y)
         rightvx = (x + TILE_WIDTH // 2, y + TILE_HEIGHT // 2)
         bottomvx = (x, y + TILE_HEIGHT) 
@@ -76,7 +74,7 @@ class Board_setup:
         Tile_entry["VERTEXES"] = vertexes
         pygame.draw.polygon(surface, color, vertexes)
         if border_color:
-            pygame.draw.polygon(surface, border_color, vertexes, 3)  # Draw border with width of 3
+            pygame.draw.polygon(surface, border_color, vertexes, 3)  #Used for the hovererd tile in tile_hover
 
     def index_to_letter(self, index):
         return chr(ord('A') + index)
@@ -107,16 +105,24 @@ class Board_setup:
         return TILE_SET, grid_surface
 
 class Draw_cubes:
-    def draw_cubes(self, surface, CUBE_LIST):
+    def draw_cubes(self, surface, CUBE_LIST, dragging_cube, selected_cube):
         total_cubes = len(CUBE_LIST)
-        offset_y = -15 # to make the cube sit nicely in the square.
         for cubes in CUBE_LIST[:total_cubes]:  
             cube_ID = cubes["ID"]
             cube_color = cubes["TEAMCOLOR"]
-            cube_x, cube_y = cubes["COORDINATES"]
+
+            if dragging_cube and cube_ID == selected_cube:
+                cube_x, cube_y = cubes["NEW COORDINATES"]
+                offset_y = -30
+            else:
+                cube_x, cube_y = cubes["OLD COORDINATES"]  
+                offset_y = -15
+
             cube_alive = cubes["ALIVE"]
             cube_kinged = cubes["KINGED"]
+
             self.visualize_cubes(surface, cube_x, cube_y, offset_y, cube_alive, cube_color)
+
     
     def visualize_cubes(self, surface, cube_x, cube_y, offset_y, cube_alive, cube_color):
         if cube_alive:            
@@ -161,7 +167,7 @@ class Game_logic:
 class Hitbox_detection:
     def cube_hitbox(self, mouse_pos):
         for cube in CUBE_LIST:
-            cube_x, cube_y = cube["COORDINATES"]
+            cube_x, cube_y = cube["OLD COORDINATES"]
             hitbox = [
                 (cube_x - CUBE_WIDTH // 2, cube_y),
                 (cube_x + CUBE_WIDTH // 2, cube_y),
@@ -180,7 +186,7 @@ class Hitbox_detection:
             if self.hitbox_detection(mouse_pos, hitbox):
                 hovered_tile = tile
                 self.tile_hover(hovered_tile)
-                if dragging_cube == True and isinstance(selected_cube, int):
+                if dragging_cube == True and isinstance(selected_cube, int): #default for both are False, None, unless a cube is selected and mouse_one is held.
                     return hovered_tile
         return None
 
@@ -219,11 +225,12 @@ class Hitbox_detection:
         
         picked_tile_coords = picked_tile["POSITION"]
         picked_tile_validity = picked_tile["TILE_VALIDITY"]
-        selected_cube_old_coords = CUBE_LIST[selected_cube - 1]["COORDINATES"]
+        selected_cube_old_coords = CUBE_LIST[selected_cube - 1]["OLD COORDINATES"]
         if picked_tile_validity:
-            CUBE_LIST[selected_cube - 1]["COORDINATES"] = [picked_tile_coords[0], picked_tile_coords[1]]
+            CUBE_LIST[selected_cube - 1]["OLD COORDINATES"] = [picked_tile_coords[0], picked_tile_coords[1]]
         else:
-            CUBE_LIST[selected_cube - 1]["COORDINATES"] = [selected_cube_old_coords[0], selected_cube_old_coords[1]]
+            CUBE_LIST[selected_cube - 1]["OLD COORDINATES"] = [selected_cube_old_coords[0], selected_cube_old_coords[1]]
+        CUBE_LIST[selected_cube - 1]["NEW COORDINATES"] = CUBE_LIST[selected_cube - 1]["OLD COORDINATES"]
 
 class DebugSetting:
     def __init__(self):
@@ -282,21 +289,19 @@ class DebugSetting:
 
 DEBUG_SETTING = DebugSetting()
 SETUP_BOARD = Board_setup()
-TILE_SET, grid_surface = SETUP_BOARD.setup_iso_grid(GRID_SIZE)
 SETUP_CUBES = Draw_cubes()
 HITBOX_DETECTION = Hitbox_detection()
 GAME_LOGIC = Game_logic()
 
+TILE_SET, grid_surface = SETUP_BOARD.setup_iso_grid(GRID_SIZE)
 for CUBE_ID in CUBE_LIST:
     for TILE_ID in TILE_SET:
         if CUBE_ID["INIT_TILE_ID"] == TILE_ID["TILEID"]:
-            CUBE_ID["COORDINATES"] = TILE_ID["POSITION"]
-
-
-
+            CUBE_ID["NEW COORDINATES"] = TILE_ID["POSITION"]
+            CUBE_ID["OLD COORDINATES"] = TILE_ID["POSITION"]
 
 running = True
-dragging_cube = None
+dragging_cube = False
 selected_cube = None
 Tile_hover = None
 
@@ -318,24 +323,22 @@ while running:
                 print(dragging_cube)
         elif event.type == pygame.MOUSEBUTTONUP:
             HITBOX_DETECTION.snap_to_tile_logic(mouse_pos, dragging_cube, selected_cube)
-            dragging_cube = None
+            dragging_cube = False
             selected_cube = None
                 
         elif event.type == pygame.MOUSEMOTION:
             if dragging_cube:
-                CUBE_LIST[selected_cube - 1]['COORDINATES'] = [mouse_pos[0], mouse_pos[1]]
+                CUBE_LIST[selected_cube - 1]["NEW COORDINATES"] = [mouse_pos[0], mouse_pos[1]-30] #has a little bug where the cube moves position. This is because new coordinate and mouse_pos aren't equall. Fix later.
 
     screen.fill(BACKGROUND_COLOR)
     screen.blit(grid_surface, (0, 0))
     screen.blit(BUTTON_IMAGE, BUTTON_RECT.topleft)
 
-    # Draw the cubes
-    SETUP_CUBES.draw_cubes(screen, CUBE_LIST)
-
+    SETUP_CUBES.draw_cubes(screen, CUBE_LIST, dragging_cube, selected_cube) #currently this redraws all the cubes constantly, while it's only really needed when dragging a cube. Fix this later for better memory usage.
+    
     if dragging_cube:
         print(dragging_cube)
 
-    # Display the debug panel for the hovered tile
     if DEBUG_MODE:
         DEBUG_SETTING.draw_tileID(screen, TILE_SET)
         DEBUG_SETTING.debug_panel_mouse_pos(screen, mouse_pos)
