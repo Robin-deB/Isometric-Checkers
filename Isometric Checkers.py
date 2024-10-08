@@ -21,19 +21,23 @@ CUBE_COLOR_GREEN = (0, 255, 0)
 CUBE_COLOR_TOP_R = (200, 0, 0)
 CUBE_COLOR_LEFT_R = (150, 0, 0)
 CUBE_COLOR_RIGHT_R = (100, 0, 0)
-CUBE_COLOR_TOP_R_H = (150, 0, 0)
-CUBE_COLOR_LEFT_R_H = (100, 0, 0)
-CUBE_COLOR_RIGHT_R_H = (50, 0, 0)
+CUBE_COLOR_TOP_R_H = (250, 0, 0)
+CUBE_COLOR_LEFT_R_H = (225, 0, 0)
+CUBE_COLOR_RIGHT_R_H = (200, 0, 0)
 CUBE_COLOR_TOP_G = (0, 200, 0)
 CUBE_COLOR_LEFT_G = (0, 150, 0)
 CUBE_COLOR_RIGHT_G = (0, 100, 0)
-CUBE_COLOR_TOP_G_H = (0, 150, 0)
-CUBE_COLOR_LEFT_G_H = (0, 100, 0)
-CUBE_COLOR_RIGHT_G_H = (0, 50, 0)
+CUBE_COLOR_TOP_G_H = (0, 250, 0)
+CUBE_COLOR_LEFT_G_H = (0, 225, 0)
+CUBE_COLOR_RIGHT_G_H = (0, 200, 0)
+DEBUG_COLOR_KINGED = (255, 255, 0)
 
 CUBE_WIDTH = TILE_WIDTH - 20
 CUBE_HEIGHT = TILE_HEIGHT - 10
 CUBE_HEIGHT_3D = 20
+
+CROWN_IMAGE = pygame.image.load("C:/Users/091318/OneDrive - Stedin Groep/Robin/Coding/Python/money.png")
+CROWN_IMAGE = pygame.transform.scale(CROWN_IMAGE, (40, 30))
 
 CUBE_LIST = [
     {"ID" : 1, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "A2", "COORDINATES" : [0,0]},
@@ -71,16 +75,16 @@ class Board_setup:
         rightvx = (x + TILE_WIDTH // 2, y + TILE_HEIGHT // 2)
         bottomvx = (x, y + TILE_HEIGHT) 
         leftvx = (x - TILE_WIDTH // 2, y + TILE_HEIGHT // 2)    
-        vertexes = [
+        VERTICES = [
             (topvx),
             (rightvx),
             (bottomvx),
             (leftvx)
         ]
-        Tile_entry["VERTEXES"] = vertexes
-        pygame.draw.polygon(surface, color, vertexes)
+        Tile_entry["VERTICES"] = VERTICES
+        pygame.draw.polygon(surface, color, VERTICES)
         if border_color:
-            pygame.draw.polygon(surface, border_color, vertexes, 3)  #Used for the hovererd tile in tile_hover
+            pygame.draw.polygon(surface, border_color, VERTICES, 3)  #Used for the hovererd tile in tile_hover
 
     def index_to_letter(self, index):
         return chr(ord('A') + index)
@@ -91,6 +95,7 @@ class Board_setup:
         grid_surface.fill(BACKGROUND_COLOR)
         for row in range(GRID_SIZE):
             for col in range(GRID_SIZE):
+                print(f"Row: {row}, Col: {col}")
                 x = (col - row) * (TILE_WIDTH // 2) + WINDOW_WIDTH // 2
                 y = (col + row) * (TILE_HEIGHT // 2) + WINDOW_HEIGHT // 4
                 
@@ -102,7 +107,7 @@ class Board_setup:
                     TILE_VALIDITY = True
 
                 row_letter = self.index_to_letter(row)
-                Tile_entry = {"TILEID" : row_letter + str(col+1), "POSITION" : (x, y), "VERTEXES" : (), "COLOR" : TILE_COLOR, "TILE_VALIDITY" : TILE_VALIDITY, "TILE_IN_USE" : None}
+                Tile_entry = {"TILEID" : row_letter + str(col+1), "POSITION" : (x, y), "VERTICES" : (), "COLOR" : TILE_COLOR, "TILE_VALIDITY" : TILE_VALIDITY, "TILE_IN_USE" : None,"TEAM_COLOR" : None, "TILE_COL_ROW" : (col, row)}
                 TILE_SET.append(Tile_entry)
 
                 # Draw tile without borders for the initial board
@@ -111,7 +116,7 @@ class Board_setup:
         return TILE_SET, grid_surface
 
 class Draw_cubes:
-    def draw_cubes(self, surface, CUBE_LIST, dragging_cube, selected_cube, cube_hover):
+    def draw_cubes(self, surface, CUBE_LIST, cube_dragging, selected_cube_drag, cube_hover, selected_cube_hover):
         total_cubes = len(CUBE_LIST)
         for cubes in CUBE_LIST[:total_cubes]:  
             cube_ID = cubes["ID"]
@@ -120,34 +125,37 @@ class Draw_cubes:
             cube_kinged = cubes["KINGED"]
 
             if cube_alive:
-                if dragging_cube and cube_ID == selected_cube:
+                if cube_dragging is True and isinstance(selected_cube_drag, int) and selected_cube_drag == cube_ID:
                     cube_x, cube_y = pygame.mouse.get_pos()
                     offset_y = -40
-                elif cube_hover and cube_ID == selected_cube:
-                    cube_x, cube_y = cubes["COORDINATES"]
+                    self.visualize_cubes(surface, cube_x, cube_y, offset_y, cube_color, True, cube_kinged)
+
+                elif cube_hover is True and isinstance(selected_cube_hover, int) and selected_cube_hover == cube_ID and cube_dragging == False:
+                    cube_x, cube_y = cubes["COORDINATES"]  
                     offset_y = -15
-                    print(cube_hover)                
+                    self.visualize_cubes(surface, cube_x, cube_y, offset_y, cube_color, True, cube_kinged)
+
                 else:
                     cube_x, cube_y = cubes["COORDINATES"]  
                     offset_y = -15
-                
-                self.visualize_cubes(surface, cube_x, cube_y, offset_y, cube_color, cube_hover)            
+                    self.visualize_cubes(surface, cube_x, cube_y, offset_y, cube_color, False, cube_kinged)
+       
             else:
                 break
     
-    def visualize_cubes(self, surface, cube_x, cube_y, offset_y, cube_color, cube_hover):      
-        if cube_color == "RED" and cube_hover == None:
+    def visualize_cubes(self, surface, cube_x, cube_y, offset_y, cube_color, cube_hover, cube_kinged):      
+        if cube_color == "RED" and cube_hover == False:
             color_top = CUBE_COLOR_TOP_R
             color_left = CUBE_COLOR_LEFT_R
             color_right = CUBE_COLOR_RIGHT_R
-        elif cube_color == "GREEN" and cube_hover == None:
+        elif cube_color == "GREEN" and cube_hover == False:
             color_top = CUBE_COLOR_TOP_G
             color_left = CUBE_COLOR_LEFT_G
             color_right = CUBE_COLOR_RIGHT_G
         elif cube_color == "RED" and cube_hover == True:
             color_top = CUBE_COLOR_TOP_R_H
             color_left = CUBE_COLOR_LEFT_R_H
-            color_right = CUBE_COLOR_RIGHT_R_H
+            color_right = CUBE_COLOR_RIGHT_R_H     
         else:
             color_top = CUBE_COLOR_TOP_G_H
             color_left = CUBE_COLOR_LEFT_G_H
@@ -176,11 +184,88 @@ class Draw_cubes:
             (cube_x + CUBE_WIDTH // 2, cube_y + CUBE_HEIGHT // 2 + offset_y + CUBE_HEIGHT_3D)
         ]
         pygame.draw.polygon(surface, color_right, right_points)
+        
+        if cube_kinged:
+            self.draw_crown(surface, cube_x, cube_y + offset_y)
+
+    def draw_crown(self, surface, cube_x, cube_y):
+        crown_x = cube_x - CROWN_IMAGE.get_width() // 2
+        crown_y = cube_y -2
+        surface.blit(CROWN_IMAGE, (crown_x, crown_y))
 
 class Game_logic:
-    def check_valid_move():
-        pass
+    def check_valid_move(self, mouse_pos, selected_cube_drag):
+        if selected_cube_drag is None: #if no cube is selected while mousebuttonup, do nothing.
+            return
+       
+        picked_tile = HITBOX_DETECTION.tile_hitbox(mouse_pos)
+        
+        if picked_tile is None: #if no tile is selected while mousebuttonup, do nothing.
+            return
 
+        cube_ID = CUBE_LIST[selected_cube_drag - 1]["ID"]
+        cube_team = CUBE_LIST[selected_cube_drag - 1]["TEAMCOLOR"]
+        cube_kinged = CUBE_LIST[selected_cube_drag - 1]["KINGED"]
+        
+        
+        cube_old_coordinates = CUBE_LIST[selected_cube_drag - 1]["COORDINATES"] #unpacking and checking waht the current's cube occupied tile col and row are for valid move logic
+        for current_tile in TILE_SET:
+            if current_tile["POSITION"] == cube_old_coordinates:
+                col, row = current_tile["TILE_COL_ROW"]
+
+        picked_tile_coords = picked_tile["POSITION"]
+        tile_valid = picked_tile["TILE_VALIDITY"]
+        tile_occupied = picked_tile["TILE_IN_USE"]
+        tile_occupied_by_team = picked_tile["TEAM_COLOR"]
+
+        [picked_col, picked_row] = picked_tile["TILE_COL_ROW"]
+         
+
+        if tile_valid is False: # tile is invalid (white) - return to old coordinates
+            return
+
+        elif tile_occupied is not None: #occupied - return to old coordinates
+            return
+
+        elif tile_occupied is None and cube_kinged is False: #normal cube movement when diagonal tiles is empty, only one diagonal forward allowed. None backwards.
+            allowed_tiles_a, allowed_tiles_b = self.game_rules_movement(col, row, cube_team, cube_kinged)
+            if [picked_col, picked_row] == allowed_tiles_a or [picked_col,picked_row] == allowed_tiles_b:
+                CUBE_LIST[selected_cube_drag - 1]["COORDINATES"] = picked_tile_coords
+            else:
+                return
+
+
+
+        elif tile_occupied is not None and tile_occupied_by_team != cube_team: #occupied by oppo team how to do attack.. gotta think about this one
+            return #implement later
+    
+    def game_rules_movement(self, col, row, playercolor, kinged):
+        if kinged is False:
+            if playercolor == "RED": #is only allowed downwards unless kinged or vs occupied!! add this later
+                if row == 9:
+                    allowed_tiles_a, allowed_tiles_b = (None, None) or (None, None)
+                elif col == 0:
+                    allowed_tiles_a, allowed_tiles_b = (None, None) or (row +1, col +1)
+                elif col == 9:
+                    allowed_tiles_a, allowed_tiles_b = (row +1, col -1) or (None, None)
+                else:
+                    allowed_tiles_a, allowed_tiles_b = (row +1, col -1) or (row +1, col +1)
+                return allowed_tiles_a, allowed_tiles_b
+
+            elif playercolor == "GREEN": #is only allowed upwards.
+                if row == 0:
+                    allowed_tiles_a, allowed_tiles_b = (None, None) or (None, None)
+                elif col == 0:
+                    allowed_tiles_a, allowed_tiles_b = (None, None) or (row +1, col +1)
+                elif col == 9:
+                    allowed_tiles_a, allowed_tiles_b = (row +1, col -1) or (None, None)
+                else:
+                    allowed_tiles_a, allowed_tiles_b = (row +1, col -1) or (row +1, col +1)
+                return allowed_tiles_a, allowed_tiles_b     
+
+
+    def opponent_AI():
+        pass
 
 class Hitbox_detection:
     def cube_hitbox(self, mouse_pos):
@@ -196,17 +281,15 @@ class Hitbox_detection:
                 selected_cube = cube["ID"]
                 cube_hit = True
                 return cube_hit, selected_cube
-        return None, None  
+        return False, None
 
-
-    def tile_hitbox(self, mouse_pos, dragging_cube, selected_cube): #USED FOR MOUSE/HOVER AND CUBE PLACEMENT DETECTION!
+    def tile_hitbox(self, mouse_pos): #USED FOR MOUSE/HOVER AND CUBE PLACEMENT DETECTION!
         for tile in TILE_SET:
-            hitbox = tile["VERTEXES"]
+            hitbox = tile["VERTICES"]
             if self.hitbox_detection(mouse_pos, hitbox):
                 hovered_tile = tile
                 self.tile_hover(hovered_tile)
-                if dragging_cube == True and isinstance(selected_cube, int): #default for both are False, None, unless a cube is selected and mouse_one is held.
-                    return hovered_tile
+                return hovered_tile
         return None
 
     def tile_hover(self, hovered_tile):
@@ -233,24 +316,6 @@ class Hitbox_detection:
             p1x, p1y = p2x, p2y
         return detection        
 
-    def snap_to_tile_logic(self, mouse_pos, dragging_cube, selected_cube):
-        if selected_cube is None:
-            return
-        
-        picked_tile = self.tile_hitbox(mouse_pos, dragging_cube, selected_cube)
-        
-        if picked_tile is None:
-            return
-        
-        picked_tile_coords = picked_tile["POSITION"]
-        picked_tile_validity = picked_tile["TILE_VALIDITY"]
-        selected_cube_old_coords = CUBE_LIST[selected_cube - 1]["COORDINATES"]
-        if picked_tile_validity:
-            CUBE_LIST[selected_cube - 1]["COORDINATES"] = [picked_tile_coords[0], picked_tile_coords[1]]
-        else:
-            CUBE_LIST[selected_cube - 1]["COORDINATES"] = [selected_cube_old_coords[0], selected_cube_old_coords[1]]
-
-
 class DebugSetting:
     def __init__(self):
         self.debug_font = pygame.font.Font(None, 24)  # Initialize font once
@@ -276,25 +341,6 @@ class DebugSetting:
 
         surface.blit(panel2_surface, (WINDOW_WIDTH - panel_width - 150, 10))  # Blit the panel onto the main surface
 
-    def draw_debug_panel(self, surface, tile_info):
-        """Draws the debug panel showing only the hovered tile's information."""
-        panel_width = 300
-        panel_height = 150
-        panel_surface = pygame.Surface((panel_width, panel_height))
-        panel_surface.fill(COLOR_BLACK)
-        
-        if tile_info:
-            # Format and render the hovered tile's dictionary in the panel
-            headers = ["TILEID", "POSITION", "VERTEXES", "COLOR", "VALID", "IN_USE"]
-            values = [str(tile_info[key]) for key in ["TILEID", "POSITION", "VERTEXES", "COLOR", "TILE_VALIDITY", "TILE_IN_USE"]]
-
-            for i, header in enumerate(headers):
-                text_surface = self.debug_font.render(f"{header}: {values[i]}", True, COLOR_WHITE)
-                panel_surface.blit(text_surface, (5, 5 + i * 25))
-
-        # Blit the panel onto the main surface
-        surface.blit(panel_surface, (10, 10))  # Top-left corner position
-
     def draw_tileID(self, surface, TILE_SET):
         font = pygame.font.Font(None, 32)
         for tiles in TILE_SET:
@@ -305,6 +351,42 @@ class DebugSetting:
             text = font.render(tile_ID, True, text_color)
             text_rect = text.get_rect(center=(tilex, tiley+25))
             surface.blit(text, text_rect)
+            
+    def debug_draw_board_edges(self, surface, TILE_SET):
+        font = pygame.font.Font(None, 32)
+        for tile in TILE_SET:
+            # Unpack vertices and adjust position as necessary
+            if tile["TILEID"] == "A1":
+                x, y = tile["VERTICES"][0]  # Top-left
+                y -= 25  # Adjust y-coordinate upwards by 25 pixels
+            elif tile["TILEID"] == "A10":
+                x, y = tile["VERTICES"][1]  # Top-right
+                x += 50  # Adjust x-coordinate to the right by 25 pixels
+            elif tile["TILEID"] == "J10":
+                x, y = tile["VERTICES"][2]  # Bottom-right
+                y += 25  # Adjust y-coordinate downwards by 25 pixels
+            elif tile["TILEID"] == "J1":
+                x, y = tile["VERTICES"][3]  # Bottom-left
+                x -= 50  # Adjust x-coordinate to the left by 25 pixels
+
+            # Render the text as stringified coordinates
+            text = font.render(f"({x}, {y})", True, COLOR_BLACK)
+            
+            # Center the text at the adjusted (x, y) position
+            text_rect = text.get_rect(center=(x, y))
+            surface.blit(text, text_rect)  # Draw text on the given surface
+
+    def debug_buttondown_kinged(self, mouse_pos):
+        cube_hit, selected_cube_kinged = HITBOX_DETECTION.cube_hitbox(mouse_pos)
+        if cube_hit == False:
+            return
+        elif cube_hit is True and isinstance(selected_cube_kinged, int):
+            is_cube_kinged = CUBE_LIST[selected_cube_kinged -1]["KINGED"]
+            if is_cube_kinged:
+                CUBE_LIST[selected_cube_kinged -1]["KINGED"] = False
+            else:
+                CUBE_LIST[selected_cube_kinged -1]["KINGED"] = True
+
 
 DEBUG_SETTING = DebugSetting()
 SETUP_BOARD = Board_setup()
@@ -317,15 +399,22 @@ for CUBE_ID in CUBE_LIST:
     for TILE_ID in TILE_SET:
         if CUBE_ID["INIT_TILE_ID"] == TILE_ID["TILEID"]:
             CUBE_ID["COORDINATES"] = TILE_ID["POSITION"]
+            TILE_ID["TILE_IN_USE"] = CUBE_ID["ID"]
+            TILE_ID["TEAM_COLOR"] = CUBE_ID["TEAMCOLOR"]
+
+print(TILE_SET)
+
 
 running = True
-dragging_cube = False
-cube_hover = None
-selected_cube = None
+cube_dragging = False
+cube_hover = False
+selected_cube_drag = None
+selected_cube_hover = None
 Tile_hover = None
 
 while running:
     mouse_pos = pygame.mouse.get_pos()
+
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -336,31 +425,32 @@ while running:
                 DEBUG_MODE = not DEBUG_MODE
                 print(f"DEBUG_MODE is now {'ON' if DEBUG_MODE else 'OFF'}")
                 TILE_SET, grid_surface = SETUP_BOARD.setup_iso_grid(GRID_SIZE)  # Re-create the grid surface
+            elif DEBUG_MODE:
+                DEBUG_SETTING.debug_buttondown_kinged(mouse_pos)
             else:
-                dragging_cube, selected_cube = HITBOX_DETECTION.cube_hitbox(mouse_pos)
-                print(dragging_cube)
+                cube_dragging, selected_cube_drag = HITBOX_DETECTION.cube_hitbox(mouse_pos)
 
         elif event.type == pygame.MOUSEMOTION:
-            HITBOX_DETECTION.tile_hitbox(mouse_pos, dragging_cube, selected_cube)
+            HITBOX_DETECTION.tile_hitbox(mouse_pos)
+            cube_hover, selected_cube_hover = HITBOX_DETECTION.cube_hitbox(mouse_pos)
 
         elif event.type == pygame.MOUSEBUTTONUP:
-            HITBOX_DETECTION.snap_to_tile_logic(mouse_pos, dragging_cube, selected_cube)
+            GAME_LOGIC.check_valid_move(mouse_pos, selected_cube_drag)
             dragging_cube = False
-            selected_cube = None
+            selected_cube_drag = None
 
                 
     screen.fill(BACKGROUND_COLOR)
+    screen.blit(screen, (0, 0))
     screen.blit(grid_surface, (0, 0))
     screen.blit(BUTTON_IMAGE, BUTTON_RECT.topleft)
 
-    SETUP_CUBES.draw_cubes(screen, CUBE_LIST, dragging_cube, selected_cube, cube_hover) #currently this redraws all the cubes constantly, while it's only really needed when dragging a cube. Fix this later for better memory usage.
-    
-    if dragging_cube:
-        print(dragging_cube)
+    SETUP_CUBES.draw_cubes(screen, CUBE_LIST, cube_dragging, selected_cube_drag, cube_hover, selected_cube_hover) #currently this redraws all the cubes constantly, while it's only really needed when dragging a cube. Fix this later for better memory usage.
 
     if DEBUG_MODE:
         DEBUG_SETTING.draw_tileID(screen, TILE_SET)
         DEBUG_SETTING.debug_panel_mouse_pos(screen, mouse_pos)
+        DEBUG_SETTING.debug_draw_board_edges(screen, TILE_SET)
 
     pygame.display.flip()
 
