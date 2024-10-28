@@ -200,72 +200,131 @@ class Game_logic:
        
         picked_tile = HITBOX_DETECTION.tile_hitbox(mouse_pos)
         
-        if picked_tile is None: #if no tile is selected while mousebuttonup, do nothing.
+        if picked_tile is None: #if no tile is selected while mousebuttonup, do nothing (returns cube back to original place).
+            move_text = "Out of bounds"
+            GAME_COMMUNICATION.move_communication(screen, move_text)
+            print(move_text)
             return
 
-        cube_ID = CUBE_LIST[selected_cube_drag - 1]["ID"]
+        #Unpack the chosen cubes data for gamelogic checks later. 
+        cube_ID = CUBE_LIST[selected_cube_drag - 1]["ID"] 
         cube_team = CUBE_LIST[selected_cube_drag - 1]["TEAMCOLOR"]
         cube_kinged = CUBE_LIST[selected_cube_drag - 1]["KINGED"]
-        
-        
+
+        #Unpacks cube coordinates and checks these with all the tiles. That one that matches is the Tile the cube came from.        
         cube_old_coordinates = CUBE_LIST[selected_cube_drag - 1]["COORDINATES"] #unpacking and checking waht the current's cube occupied tile col and row are for valid move logic
         for current_tile in TILE_SET:
-            if current_tile["POSITION"] == cube_old_coordinates:
-                col, row = current_tile["TILE_COL_ROW"]
+            if current_tile["POSITION"] == cube_old_coordinates:# Checks the tile where the cube started at.
+                current_tile_ID = current_tile["TILEID"]
+                col, row = current_tile["TILE_COL_ROW"] #Column and Row are needed for the valid movement logic.
 
-        picked_tile_coords = picked_tile["POSITION"]
-        tile_valid = picked_tile["TILE_VALIDITY"]
-        tile_occupied = picked_tile["TILE_IN_USE"]
-        tile_occupied_by_team = picked_tile["TEAM_COLOR"]
-
-        [picked_col, picked_row] = picked_tile["TILE_COL_ROW"]
+        #unpacks the picked_tile to check for valid moves. This is the tile where the cube is dropped on!
+        picked_tile_ID = picked_tile["TILEID"]#to update the list latern
+        picked_tile_coords = picked_tile["POSITION"]#to update the cubes new coordinates
+        tile_valid = picked_tile["TILE_VALIDITY"]#to check if the tile is valid for play
+        tile_occupied = picked_tile["TILE_IN_USE"]#to check if the tile is occupied
+        tile_occupied_by_team = picked_tile["TEAM_COLOR"]#to check which team occupies that tile
+        [picked_col, picked_row] = picked_tile["TILE_COL_ROW"]#to check if the tiles column and row are in the allowed ranges of movement. 
          
-
         if tile_valid is False: # tile is invalid (white) - return to old coordinates
+            move_text = "Tile is invalid (White)"
+            GAME_COMMUNICATION.move_communication(screen, move_text)
+            print(move_text)
             return
 
         elif tile_occupied is not None: #occupied - return to old coordinates
+            move_text = "Tile is already occupied"
+            GAME_COMMUNICATION.move_communication(screen, move_text)
+            print(move_text)
             return
 
-        elif tile_occupied is None and cube_kinged is False: #normal cube movement when diagonal tiles is empty, only one diagonal forward allowed. None backwards.
+        elif tile_occupied is None and cube_kinged is False: #normal cube movement when diagonal tiles is empty, only one diagonal forward allowed, None backwards. Based off the tile the cube was picked from.
             allowed_tiles_a, allowed_tiles_b = self.game_rules_movement(col, row, cube_team, cube_kinged)
-            if [picked_col, picked_row] == allowed_tiles_a or [picked_col,picked_row] == allowed_tiles_b:
-                CUBE_LIST[selected_cube_drag - 1]["COORDINATES"] = picked_tile_coords
+            
+            if (picked_col, picked_row) == allowed_tiles_a or (picked_col,picked_row) == allowed_tiles_b:
+                CUBE_LIST[selected_cube_drag - 1]["COORDINATES"] = picked_tile_coords #this updates the coordinates of the cube, ensuring it gets snapped to the new coordinates.
+
+                #if it finds a valid tile to move to, update the TILE-LIST entries to their new values.
+                for tile in TILE_SET:
+                    if current_tile_ID == tile["TILEID"]: #resets the old tile where the cube was on.
+                        tile["TILE_IN_USE"] = None
+                        tile["TEAM_COLOR"] = None
+
+
+                    if picked_tile_ID == tile["TILEID"]: #updates the tile the cube was dropped on with the relevant cube data.
+                        tile["TILE_IN_USE"] = cube_ID
+                        tile["TEAM_COLOR"] = cube_team
+
+
+
+
+
+
+
+
+
+
+
             else:
+                print(f"picked_col:{picked_col}, picked_row:{picked_row}")
+                print(f"allowed_tiles_a: {allowed_tiles_a}, allowed_tiles_b: {allowed_tiles_b}")
                 return
-
-
 
         elif tile_occupied is not None and tile_occupied_by_team != cube_team: #occupied by oppo team how to do attack.. gotta think about this one
             return #implement later
     
+
+
+
+
+
     def game_rules_movement(self, col, row, playercolor, kinged):
-        if kinged is False:
-            if playercolor == "RED": #is only allowed downwards unless kinged or vs occupied!! add this later
-                if row == 9:
-                    allowed_tiles_a, allowed_tiles_b = (None, None) or (None, None)
-                elif col == 0:
-                    allowed_tiles_a, allowed_tiles_b = (None, None) or (row +1, col +1)
+        if kinged is False: #Ensures that the cube can only move 1 tile diagonally, depending on teamcolor which way
+            if playercolor == "RED": #is only allowed downwards
+                if col == 0:
+                    allowed_tiles_a, allowed_tiles_b = (None, None), (col +1, row +1)
                 elif col == 9:
-                    allowed_tiles_a, allowed_tiles_b = (row +1, col -1) or (None, None)
+                    allowed_tiles_a, allowed_tiles_b = (col -1, row +1), (None, None)
                 else:
-                    allowed_tiles_a, allowed_tiles_b = (row +1, col -1) or (row +1, col +1)
+                    allowed_tiles_a, allowed_tiles_b = (col -1, row +1), (col +1, row +1)
                 return allowed_tiles_a, allowed_tiles_b
 
+
+
+
+
+
+
+
             elif playercolor == "GREEN": #is only allowed upwards.
-                if row == 0:
-                    allowed_tiles_a, allowed_tiles_b = (None, None) or (None, None)
-                elif col == 0:
-                    allowed_tiles_a, allowed_tiles_b = (None, None) or (row +1, col +1)
+                if col == 0:
+                    allowed_tiles_a, allowed_tiles_b = (None, None), (col +1, row -1)
                 elif col == 9:
-                    allowed_tiles_a, allowed_tiles_b = (row +1, col -1) or (None, None)
+                    allowed_tiles_a, allowed_tiles_b = (col -1, row -1), (None, None)
                 else:
-                    allowed_tiles_a, allowed_tiles_b = (row +1, col -1) or (row +1, col +1)
+                    allowed_tiles_a, allowed_tiles_b = (col -1, row -1), (col +1, row -1)
                 return allowed_tiles_a, allowed_tiles_b     
 
 
     def opponent_AI():
         pass
+
+class Game_communication:
+    def __init__(self):
+        self.game_font = pygame.font.Font(None, 24)
+        self.antialias = True  
+        self.text_color = COLOR_WHITE
+
+    def move_communication(self, surface, move_text): #communicates wether a move is allowed or not, or why not. 
+        panel_width = 400
+        panel_height = 100
+        move_com_surface = pygame.Surface((panel_width, panel_height))
+        move_com_surface.fill(COLOR_BLACK)
+
+        move_text_surface = self.game_font.render(move_text, self.antialias, self.text_color)
+        move_com_surface.blit(move_text_surface, (5,5))
+
+        surface.blit(move_com_surface, (10, 600))
 
 class Hitbox_detection:
     def cube_hitbox(self, mouse_pos):
@@ -321,6 +380,43 @@ class DebugSetting:
         self.debug_font = pygame.font.Font(None, 24)  # Initialize font once
         self.antialias = True  
         self.text_color = COLOR_WHITE
+
+    def debug_panel_tile_info(self, surface, mouse_pos):
+        panel_width1 = 300
+        panel_height1 = 200
+        panel1_surface = pygame.Surface((panel_width1, panel_height1))
+        panel1_surface.fill(COLOR_BLACK)
+
+        hovered_tile = HITBOX_DETECTION.tile_hitbox(mouse_pos)
+        
+        if hovered_tile is not None:  
+            tile_id = hovered_tile["TILEID"]
+            tile_pos = hovered_tile["POSITION"]
+            tile_validity = hovered_tile["TILE_VALIDITY"]
+            tile_in_use = hovered_tile["TILE_IN_USE"]
+            tile_team = hovered_tile["TEAM_COLOR"]
+            tile_col_row = hovered_tile["TILE_COL_ROW"]
+
+            # Create debug information text
+            tile_info = (
+                f"Tile ID: {tile_id}\n"
+                f"Position: {tile_pos}\n"
+                f"Valid: {'Yes' if tile_validity else 'No'}\n"
+                f"In Use: {tile_in_use if tile_in_use else 'No'}\n"
+                f"Team Color: {tile_team if tile_team else 'None'}\n"
+                f"Column, Row: {tile_col_row}"
+            )
+
+            # Render each line of text
+            lines = tile_info.splitlines()
+            y_offset = 5
+            for line in lines:
+                text_surface = self.debug_font.render(line, self.antialias, self.text_color)
+                panel1_surface.blit(text_surface, (5, y_offset))
+                y_offset += text_surface.get_height() + 5
+
+        # Blit the panel onto the main surface
+        surface.blit(panel1_surface, (10, 10))  # Position of debug panel 
 
     def debug_panel_mouse_pos(self, surface, mouse_pos):
         panel_width = 200
@@ -393,6 +489,7 @@ SETUP_BOARD = Board_setup()
 SETUP_CUBES = Draw_cubes()
 HITBOX_DETECTION = Hitbox_detection()
 GAME_LOGIC = Game_logic()
+GAME_COMMUNICATION = Game_communication()
 
 TILE_SET, grid_surface = SETUP_BOARD.setup_iso_grid(GRID_SIZE)
 for CUBE_ID in CUBE_LIST:
@@ -401,8 +498,6 @@ for CUBE_ID in CUBE_LIST:
             CUBE_ID["COORDINATES"] = TILE_ID["POSITION"]
             TILE_ID["TILE_IN_USE"] = CUBE_ID["ID"]
             TILE_ID["TEAM_COLOR"] = CUBE_ID["TEAMCOLOR"]
-
-print(TILE_SET)
 
 
 running = True
@@ -415,7 +510,6 @@ Tile_hover = None
 while running:
     mouse_pos = pygame.mouse.get_pos()
 
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -424,9 +518,6 @@ while running:
             if BUTTON_RECT.collidepoint(event.pos):
                 DEBUG_MODE = not DEBUG_MODE
                 print(f"DEBUG_MODE is now {'ON' if DEBUG_MODE else 'OFF'}")
-                TILE_SET, grid_surface = SETUP_BOARD.setup_iso_grid(GRID_SIZE)  # Re-create the grid surface
-            elif DEBUG_MODE:
-                DEBUG_SETTING.debug_buttondown_kinged(mouse_pos)
             else:
                 cube_dragging, selected_cube_drag = HITBOX_DETECTION.cube_hitbox(mouse_pos)
 
@@ -451,6 +542,7 @@ while running:
         DEBUG_SETTING.draw_tileID(screen, TILE_SET)
         DEBUG_SETTING.debug_panel_mouse_pos(screen, mouse_pos)
         DEBUG_SETTING.debug_draw_board_edges(screen, TILE_SET)
+        DEBUG_SETTING.debug_panel_tile_info(screen, mouse_pos)
 
     pygame.display.flip()
 
