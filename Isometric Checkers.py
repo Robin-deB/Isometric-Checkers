@@ -107,7 +107,7 @@ class Board_setup:
                     TILE_VALIDITY = True
 
                 row_letter = self.index_to_letter(row)
-                Tile_entry = {"TILEID" : row_letter + str(col+1), "POSITION" : (x, y), "VERTICES" : (), "COLOR" : TILE_COLOR, "TILE_VALIDITY" : TILE_VALIDITY, "TILE_IN_USE" : None,"TEAM_COLOR" : None, "TILE_COL_ROW" : (col, row)}
+                Tile_entry = {"TILEID" : row_letter + str(col+1), "POSITION" : (x, y), "VERTICES" : (), "COLOR" : TILE_COLOR, "TILE_VALIDITY" : TILE_VALIDITY, "TILE_IN_USE" : None,"TEAM_COLOR" : None, "TILE_COL_ROW" : (int(col), int(row))}
                 TILE_SET.append(Tile_entry)
 
                 # Draw tile without borders for the initial board
@@ -141,7 +141,7 @@ class Draw_cubes:
                     self.visualize_cubes(surface, cube_x, cube_y, offset_y, cube_color, False, cube_kinged)
        
             else:
-                break
+                continue
     
     def visualize_cubes(self, surface, cube_x, cube_y, offset_y, cube_color, cube_hover, cube_kinged):      
         if cube_color == "RED" and cube_hover == False:
@@ -193,8 +193,9 @@ class Draw_cubes:
         crown_y = cube_y -2
         surface.blit(CROWN_IMAGE, (crown_x, crown_y))
 
-class Game_logic:
+class Game_logic:   
     def check_valid_move(self, mouse_pos, selected_cube_drag):
+        self.movement_type = None
         if selected_cube_drag is None: #if no cube is selected while mousebuttonup, do nothing.
             return
        
@@ -207,103 +208,120 @@ class Game_logic:
             return
 
         #Unpack the chosen cubes data for gamelogic checks later. 
-        cube_ID = CUBE_LIST[selected_cube_drag - 1]["ID"] 
-        cube_team = CUBE_LIST[selected_cube_drag - 1]["TEAMCOLOR"]
-        cube_kinged = CUBE_LIST[selected_cube_drag - 1]["KINGED"]
+        self.cube_ID = CUBE_LIST[selected_cube_drag - 1]["ID"] 
+        self.cube_team = CUBE_LIST[selected_cube_drag - 1]["TEAMCOLOR"]
+        self.cube_kinged = CUBE_LIST[selected_cube_drag - 1]["KINGED"]
 
         #Unpacks cube coordinates and checks these with all the tiles. That one that matches is the Tile the cube came from.        
         cube_old_coordinates = CUBE_LIST[selected_cube_drag - 1]["COORDINATES"] #unpacking and checking waht the current's cube occupied tile col and row are for valid move logic
         for current_tile in TILE_SET:
             if current_tile["POSITION"] == cube_old_coordinates:# Checks the tile where the cube started at.
-                current_tile_ID = current_tile["TILEID"]
-                col, row = current_tile["TILE_COL_ROW"] #Column and Row are needed for the valid movement logic.
+                self.current_tile_ID = current_tile["TILEID"]
+                self.col, self.row = current_tile["TILE_COL_ROW"] #Column and Row are needed for the valid movement logic.
 
         #unpacks the picked_tile to check for valid moves. This is the tile where the cube is dropped on!
-        picked_tile_ID = picked_tile["TILEID"]#to update the list latern
-        picked_tile_coords = picked_tile["POSITION"]#to update the cubes new coordinates
-        tile_valid = picked_tile["TILE_VALIDITY"]#to check if the tile is valid for play
-        tile_occupied = picked_tile["TILE_IN_USE"]#to check if the tile is occupied
-        tile_occupied_by_team = picked_tile["TEAM_COLOR"]#to check which team occupies that tile
-        [picked_col, picked_row] = picked_tile["TILE_COL_ROW"]#to check if the tiles column and row are in the allowed ranges of movement. 
+        self.picked_tile_ID = picked_tile["TILEID"]#to update the list latern
+        self.picked_tile_coords = picked_tile["POSITION"]#to update the cubes new coordinates
+        self.tile_valid = picked_tile["TILE_VALIDITY"]#to check if the tile is valid for play
+        self.tile_occupied = picked_tile["TILE_IN_USE"]#to check if the tile is occupied
+        self.tile_occupied_by_team = picked_tile["TEAM_COLOR"]#to check which team occupies that tile
+        [self.picked_col, self.picked_row] = picked_tile["TILE_COL_ROW"]#to check if the tiles column and row are in the allowed ranges of movement. 
          
-        if tile_valid is False: # tile is invalid (white) - return to old coordinates
+        if self.tile_valid is False: # tile is invalid (white) - return to old coordinates
             move_text = "Tile is invalid (White)"
             GAME_COMMUNICATION.move_communication(screen, move_text)
             print(move_text)
             return
 
-        elif tile_occupied is not None: #occupied - return to old coordinates
+        elif self.tile_occupied is not None: #occupied - return to old coordinates
             move_text = "Tile is already occupied"
             GAME_COMMUNICATION.move_communication(screen, move_text)
             print(move_text)
             return
 
-        elif tile_occupied is None and cube_kinged is False: #normal cube movement when diagonal tiles is empty, only one diagonal forward allowed, None backwards. Based off the tile the cube was picked from.
-            allowed_tiles_a, allowed_tiles_b = self.game_rules_movement(col, row, cube_team, cube_kinged)
+        elif self.tile_occupied is None and self.cube_kinged is False: #normal cube movement when diagonal tiles is empty, only one diagonal forward allowed, None backwards. Based off the tile the cube was picked from.
+            self.attackmove_tile_col = (self.picked_col - self.col)
+            self.attackmove_tile_row = (self.picked_row - self.row)
+
+            print(self.attackmove_tile_col, self.attackmove_tile_row)            
             
-            if (picked_col, picked_row) == allowed_tiles_a or (picked_col,picked_row) == allowed_tiles_b:
-                CUBE_LIST[selected_cube_drag - 1]["COORDINATES"] = picked_tile_coords #this updates the coordinates of the cube, ensuring it gets snapped to the new coordinates.
-
-                #if it finds a valid tile to move to, update the TILE-LIST entries to their new values.
-                for tile in TILE_SET:
-                    if current_tile_ID == tile["TILEID"]: #resets the old tile where the cube was on.
-                        tile["TILE_IN_USE"] = None
-                        tile["TEAM_COLOR"] = None
-
-
-                    if picked_tile_ID == tile["TILEID"]: #updates the tile the cube was dropped on with the relevant cube data.
-                        tile["TILE_IN_USE"] = cube_ID
-                        tile["TEAM_COLOR"] = cube_team
+            #First determine wether move is normal or attack or Kinged
+            if abs(self.attackmove_tile_col) == 2 and abs(self.attackmove_tile_row) == 2: #attack move
+                print("Attack move triggered")
+                self.attack_movement_normal()
+            elif abs(self.attackmove_tile_col) > 2 or abs(self.attackmove_tile_row) > 2:
+                return                                                        #kinged move implement later. now just snaps back tile.
+            
+            else:                                                         #normal move
+                self.normal_movement()       
 
 
-
-
-
-
-
-
-
-
-
-            else:
-                print(f"picked_col:{picked_col}, picked_row:{picked_row}")
-                print(f"allowed_tiles_a: {allowed_tiles_a}, allowed_tiles_b: {allowed_tiles_b}")
-                return
-
-        elif tile_occupied is not None and tile_occupied_by_team != cube_team: #occupied by oppo team how to do attack.. gotta think about this one
-            return #implement later
     
+    def attack_movement_normal(self):
+        self.movement_type = "Attack"
+        attacked_tile = (int((self.attackmove_tile_col / 2) + self.col), int((self.attackmove_tile_row / 2)+self.row))
+        print(attacked_tile)
 
-
-
-
-
-    def game_rules_movement(self, col, row, playercolor, kinged):
-        if kinged is False: #Ensures that the cube can only move 1 tile diagonally, depending on teamcolor which way
-            if playercolor == "RED": #is only allowed downwards
-                if col == 0:
-                    allowed_tiles_a, allowed_tiles_b = (None, None), (col +1, row +1)
-                elif col == 9:
-                    allowed_tiles_a, allowed_tiles_b = (col -1, row +1), (None, None)
+        for tile in TILE_SET:
+            if attacked_tile == tile["TILE_COL_ROW"]:
+                self.attacked_tile_ID = tile["TILEID"]
+                self.attacked_tile_in_use = tile["TILE_IN_USE"]
+                print(f"Attacked cubeID is {self.attacked_tile_in_use}")
+                self.attacked_tile_team = tile ["TEAM_COLOR"]   
+                print(f"Attacked tilecolor is {self.attacked_tile_team}")             
+                
+                if self.attacked_tile_in_use is None or self.attacked_tile_team == self.cube_team: #if not occupied or the attacked tile/cube has the same team do nothing
+                    print("No attack possible - adjacent tile is either empty or occupied by own team")
+                    return
                 else:
-                    allowed_tiles_a, allowed_tiles_b = (col -1, row +1), (col +1, row +1)
-                return allowed_tiles_a, allowed_tiles_b
+                    self.update_movement_data()
+                    print("update movement data func triggered")
 
 
+    def normal_movement(self):
+        self.movement_type = "Normal"
+        allowed_movement_red = ((self.col -1, self.row +1),(self.col +1, self.row +1)) #1diag downwardL and downwardR, only for red
+        allowed_movement_green = ((self.col +1, self.row -1),(self.col -1, self.row -1)) #1diag upwardL and upwardR, only for green
+        new_tile = (self.picked_col, self.picked_row)
+        
+        if self.cube_team == "RED":
+            if new_tile != allowed_movement_red[0] and new_tile != allowed_movement_red[1]:
+                print("Red not allowed movement")
+                return
+            else:
+                self.update_movement_data()
+        else:
+            if new_tile != allowed_movement_green[0] and new_tile != allowed_movement_green[1]:
+                print("Green not allowed movement")
+                return
+            else:
+                self.update_movement_data()
 
 
+    def update_movement_data(self):
+        for tile in TILE_SET:
+            if self.current_tile_ID == tile["TILEID"]: #resets the old tile where the cube was on.
+                tile["TILE_IN_USE"] = None
+                tile["TEAM_COLOR"] = None
 
+            if self.picked_tile_ID == tile["TILEID"]: #updates the tile the cube was dropped on with the relevant cube data.
+                tile["TILE_IN_USE"] = self.cube_ID
+                tile["TEAM_COLOR"] = self.cube_team
+                
+            if self.movement_type == "Attack":
+                if self.attacked_tile_ID == tile["TILEID"]: #resets the attacked tile where the attacked cube was on.
+                    tile["TILE_IN_USE"] = None
+                    tile["TEAM_COLOR"] = None
 
+                for cube in CUBE_LIST: #ensures the cube disappears, by making it so it's not drawn anymore.
+                    if self.attacked_tile_in_use == cube["ID"]:
+                        cube["ALIVE"] = False
+                        break
 
+        #updates the moving cube's coordinates to the new tile's coordinates.
+        CUBE_LIST[selected_cube_drag - 1]["COORDINATES"] = self.picked_tile_coords    
+  
 
-            elif playercolor == "GREEN": #is only allowed upwards.
-                if col == 0:
-                    allowed_tiles_a, allowed_tiles_b = (None, None), (col +1, row -1)
-                elif col == 9:
-                    allowed_tiles_a, allowed_tiles_b = (col -1, row -1), (None, None)
-                else:
-                    allowed_tiles_a, allowed_tiles_b = (col -1, row -1), (col +1, row -1)
-                return allowed_tiles_a, allowed_tiles_b     
 
 
     def opponent_AI():
@@ -483,7 +501,6 @@ class DebugSetting:
             else:
                 CUBE_LIST[selected_cube_kinged -1]["KINGED"] = True
 
-
 DEBUG_SETTING = DebugSetting()
 SETUP_BOARD = Board_setup()
 SETUP_CUBES = Draw_cubes()
@@ -526,9 +543,10 @@ while running:
             cube_hover, selected_cube_hover = HITBOX_DETECTION.cube_hitbox(mouse_pos)
 
         elif event.type == pygame.MOUSEBUTTONUP:
-            GAME_LOGIC.check_valid_move(mouse_pos, selected_cube_drag)
-            dragging_cube = False
-            selected_cube_drag = None
+            if selected_cube_drag is not None:
+                GAME_LOGIC.check_valid_move(mouse_pos, selected_cube_drag)    
+                dragging_cube = False
+                selected_cube_drag = None
 
                 
     screen.fill(BACKGROUND_COLOR)
