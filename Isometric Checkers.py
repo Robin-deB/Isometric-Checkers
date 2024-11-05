@@ -13,8 +13,8 @@ TILE_HEIGHT = 48
 BACKGROUND_COLOR = (200, 200, 200)
 COLOR_BLACK = (0, 0, 0)
 COLOR_WHITE = (255, 255, 255)
-HOVER_COLOR = (255, 140, 0)  # Yellow for hover effect
-HIGHLIGHT_COLOR1 = (200,200,0) #Darker Yellow for highlighting allowed moves
+HOVER_COLOR = (255, 0, 255)  # orange for hover effect
+HIGHLIGHT_COLOR1 = (215, 215 ,0) # Yellow for highlighting allowed moves
 
 # Cube specifics
 CUBE_COLOR_RED = (255, 0, 0)
@@ -41,7 +41,7 @@ CROWN_IMAGE = pygame.image.load("C:/Users/091318/OneDrive - Stedin Groep/Robin/C
 CROWN_IMAGE = pygame.transform.scale(CROWN_IMAGE, (40, 30))
 
 CUBE_LIST = [
-    {"ID" : 1, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : True, "INIT_TILE_ID": "E6", "COORDINATES" : [0,0]},
+    {"ID" : 1, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "A2", "COORDINATES" : [0,0]},
     {"ID" : 2, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "A4", "COORDINATES" : [0,0]},
     {"ID" : 3, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "A6", "COORDINATES" : [0,0]},
     {"ID" : 4, "TEAMCOLOR" : "RED", "ALIVE" : True, "KINGED" : False, "INIT_TILE_ID": "A8", "COORDINATES" : [0,0]},
@@ -71,7 +71,7 @@ screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption("Isometric Checkers")
 
 class Board_setup:
-   def draw_iso_tile(self, surface, color, x, y, Tile_entry, border_color=None, border_thickness=0):
+    def draw_iso_tile(self, surface, color, x, y, Tile_entry, border_color=None, border_thickness=0):
         topvx = (x, y)
         rightvx = (x + TILE_WIDTH // 2, y + TILE_HEIGHT // 2)
         bottomvx = (x, y + TILE_HEIGHT)
@@ -321,8 +321,7 @@ class Game_logic:
 
     def kinged_movement(self):
         self.movement_type = "Kinged"
-        kinged_movements = ((-1, -1), (1, -1), (-1, 1), (1, 1)) #1=upL, 2=upR, 3=downL, 4=downR
-        pass
+        allowed_movements= []
 
 
 
@@ -357,47 +356,213 @@ class Game_communication:
 
         surface.blit(move_com_surface, (10, 600))
 
-    def highlight_allowed_moves(self, surface, selected_cube_drag):
-        kinged_movements = ((-1, -1), (1, -1), (-1, 1), (1, 1))
+    def highlight_allowed_logic(self, selected_cube_drag):
         if selected_cube_drag is None:
             return
 
-        cube_ID = CUBE_LIST[selected_cube_drag - 1]["ID"]
-        cube_team = CUBE_LIST[selected_cube_drag - 1]["TEAMCOLOR"]
-        cube_kinged = CUBE_LIST[selected_cube_drag - 1]["KINGED"]
+        self.cube_ID = CUBE_LIST[selected_cube_drag - 1]["ID"]
+        self.cube_team = CUBE_LIST[selected_cube_drag - 1]["TEAMCOLOR"]
+        self.cube_kinged = CUBE_LIST[selected_cube_drag - 1]["KINGED"]
     
         for tile in TILE_SET:
             if tile["TILE_IN_USE"] == CUBE_LIST[selected_cube_drag - 1]["ID"]:
-                init_tile = tile["TILE_COL_ROW"]
-                print(init_tile)
+                self.init_tile = tile["TILE_COL_ROW"]
+                print(self.init_tile)
                 break
-        if cube_kinged is True:
-            for move in kinged_movements:
-                new_tile = (init_tile[0] + move[0], init_tile[1] + move[1])
-                print(new_tile)
-                for tile in TILE_SET:
-                    if new_tile == tile["TILE_COL_ROW"]:
-                        if tile["TILE_VALIDITY"] is True and tile["TILE_IN_USE"] is None:
-                            x, y = tile["POSITION"]
-                            SETUP_BOARD.draw_iso_tile(grid_surface, HIGHLIGHT_COLOR1, x, y, tile)
+        
+        if self.cube_kinged is True:
+            self.highlight_allowed_moves_kinged()
 
+        elif self.cube_kinged is False:
+            self.highlight_allowed_moves_normal()
 
+    def highlight_allowed_moves_normal(self):
+        #HIGHLIGHTS THE ALLOWED MOVEMENTS FOR A NORMAL CUBE
+        allowed_movements = []
+        new_tile = self.init_tile
+        
+        if self.cube_team == "RED":
+            #downward left
+            stop_loop = False
+            for i in range(2):
+                if stop_loop:
+                    break
+                new_tile = (new_tile[0] -1, new_tile[1] +1)
+                if i == 0:
+                    for tile in TILE_SET:
+                        if tile["TILE_COL_ROW"] == new_tile:
+                            if tile["TEAM_COLOR"] == self.cube_team:
+                                stop_loop = True
+                            elif tile["TILE_IN_USE"] is None:
+                                stop_loop = True
+                                allowed_movements.append(new_tile)                                
+                else:                    
+                    allowed_movements.append(new_tile)
+            #downward right
+            new_tile = self.init_tile
+            stop_loop = False
+            for i in range(2):
+                if stop_loop:
+                    break
+                new_tile = (new_tile[0] +1, new_tile[1] +1)
+                if i == 0:
+                    for tile in TILE_SET:
+                        if tile["TILE_COL_ROW"] == new_tile:
+                            if tile["TEAM_COLOR"] == self.cube_team:
+                                stop_loop = True
+                            elif tile["TILE_IN_USE"] is None:
+                                stop_loop = True
+                                allowed_movements.append(new_tile)     
+                else:                    
+                    allowed_movements.append(new_tile)
+            #upwards left
+            new_tile = self.init_tile
+            stop_loop = False
+            for i in range(2):
+                if stop_loop:
+                    break
+                new_tile = (new_tile[0] -1, new_tile[1] -1)
+                if i == 0:
+                    for tile in TILE_SET:
+                        if tile["TILE_COL_ROW"] == new_tile:
+                            if tile["TEAM_COLOR"] != "GREEN":
+                                stop_loop = True
+                                break
+                            else:
+                                allowed_movements.append(new_tile)
+                else:                    
+                    allowed_movements.append(new_tile)
+            #upwards right
+            new_tile = self.init_tile
+            stop_loop = False
+            for i in range(2):
+                if stop_loop:
+                    break
+                new_tile = (new_tile[0] +1, new_tile[1] -1)
+                if i == 0:
+                    for tile in TILE_SET:
+                        if tile["TILE_COL_ROW"] == new_tile:
+                            if tile["TEAM_COLOR"] != "GREEN":
+                                stop_loop = True
+                                break
+                            else:
+                                allowed_movements.append(new_tile)
+                else:                    
+                    allowed_movements.append(new_tile)
 
+        elif self.cube_team == "GREEN":
+            #upward left
+            stop_loop = False
+            for i in range(2):
+                if stop_loop:
+                    break
+                new_tile = (new_tile[0] -1, new_tile[1] -1)
+                if i == 0:
+                    for tile in TILE_SET:
+                        if tile["TILE_COL_ROW"] == new_tile:
+                            if tile["TEAM_COLOR"] == self.cube_team:
+                                stop_loop = True
+                            elif tile["TILE_IN_USE"] is None:
+                                stop_loop = True
+                                allowed_movements.append(new_tile)                                
+                else:                    
+                    allowed_movements.append(new_tile)
+            #upward right
+            new_tile = self.init_tile
+            stop_loop = False
+            for i in range(2):
+                if stop_loop:
+                    break
+                new_tile = (new_tile[0] +1, new_tile[1] -1)
+                if i == 0:
+                    for tile in TILE_SET:
+                        if tile["TILE_COL_ROW"] == new_tile:
+                            if tile["TEAM_COLOR"] == self.cube_team:
+                                stop_loop = True
+                            elif tile["TILE_IN_USE"] is None:
+                                stop_loop = True
+                                allowed_movements.append(new_tile)     
+                else:                    
+                    allowed_movements.append(new_tile)
+            #downwards left
+            new_tile = self.init_tile
+            stop_loop = False
+            for i in range(2):
+                if stop_loop:
+                    break
+                new_tile = (new_tile[0] -1, new_tile[1] +1)
+                if i == 0:
+                    for tile in TILE_SET:
+                        if tile["TILE_COL_ROW"] == new_tile:
+                            if tile["TEAM_COLOR"] != "RED":
+                                stop_loop = True
+                                break
+                            else:
+                                allowed_movements.append(new_tile)
+                else:                    
+                    allowed_movements.append(new_tile)
+            #downwards right
+            new_tile = self.init_tile
+            stop_loop = False
+            for i in range(2):
+                if stop_loop:
+                    break
+                new_tile = (new_tile[0] +1, new_tile[1] +1)
+                if i == 0:
+                    for tile in TILE_SET:
+                        if tile["TILE_COL_ROW"] == new_tile:
+                            if tile["TEAM_COLOR"] != "RED":
+                                stop_loop = True
+                                break
+                            else:
+                                allowed_movements.append(new_tile)
+                else:                    
+                    allowed_movements.append(new_tile)
 
+        self.highlight_allowed_tiles(allowed_movements)
+    
+    def highlight_allowed_moves_kinged(self):   
+        #HIGHLIGHTS THE ALLOWED MOVEMENTS FOR A KINGED CUBE
+        allowed_movements= []
 
+        new_tile = self.init_tile            
+        #checks the entire kinged movement for downL
+        while new_tile[0] != 0 and new_tile[1] != 9:
+            new_tile = (new_tile[0] -1, new_tile[1] +1)
+            allowed_movements.append(new_tile)
+        #downward Right
+        new_tile = self.init_tile
+        while new_tile[0] != 9 and new_tile[1] != 9:
+            new_tile = (new_tile[0] +1, new_tile[1] +1)
+            allowed_movements.append(new_tile)
+        #upwards Left
+        new_tile = self.init_tile
+        while new_tile[0] != 0 and new_tile[1] != 0:
+            new_tile = (new_tile[0] -1, new_tile[1] -1)
+            allowed_movements.append(new_tile)
+        #upwards Right
+        new_tile = self.init_tile
+        while new_tile[0] != 9 and new_tile[1] != 0:
+            new_tile = (new_tile[0] +1, new_tile[1] -1)
+            allowed_movements.append(new_tile)
+        
+        self.highlight_allowed_tiles(allowed_movements)
 
-
-
-
-
-
-
-
-
-
+    def highlight_allowed_tiles(self, allowed_tiles):
+        allowed_movements = allowed_tiles
+        for move in allowed_movements:
+            for tile in TILE_SET:
+                if move == tile["TILE_COL_ROW"]:
+                    if tile["TILE_VALIDITY"] is True and tile["TILE_IN_USE"] is None:
+                        x, y = tile["POSITION"]
+                        SETUP_BOARD.draw_iso_tile(grid_surface, HIGHLIGHT_COLOR1, x, y, tile)
+    
 class Hitbox_detection:
     def cube_hitbox(self, mouse_pos):
         for cube in CUBE_LIST:
+            cube_alive = cube["ALIVE"]
+            if cube_alive is False:
+                continue
             cube_x, cube_y = cube["COORDINATES"]
             hitbox = [
                 (cube_x - CUBE_WIDTH // 2, cube_y),
@@ -419,7 +584,6 @@ class Hitbox_detection:
                 self.tile_hover(hovered_tile)
                 return hovered_tile
         return None
-
     def tile_hover(self, hovered_tile):
         for tile in TILE_SET:
             x, y = tile["POSITION"]
@@ -590,13 +754,13 @@ while running:
             else:
                 cube_dragging, selected_cube_drag = HITBOX_DETECTION.cube_hitbox(mouse_pos)
                 if selected_cube_drag is not None:
-                    GAME_COMMUNICATION.highlight_allowed_moves(screen, selected_cube_drag)
+                    GAME_COMMUNICATION.highlight_allowed_logic(selected_cube_drag)
 
         elif event.type == pygame.MOUSEMOTION:
             HITBOX_DETECTION.tile_hitbox(mouse_pos)
             cube_hover, selected_cube_hover = HITBOX_DETECTION.cube_hitbox(mouse_pos)
             if selected_cube_drag is not None:
-                GAME_COMMUNICATION.highlight_allowed_moves(screen, selected_cube_drag)
+                GAME_COMMUNICATION.highlight_allowed_logic(selected_cube_drag)
 
         elif event.type == pygame.MOUSEBUTTONUP:
             if selected_cube_drag is not None:
@@ -622,4 +786,5 @@ while running:
 
 pygame.quit()
 sys.exit()
+
 
